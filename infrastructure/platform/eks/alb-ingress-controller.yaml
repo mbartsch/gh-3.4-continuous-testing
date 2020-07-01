@@ -1,0 +1,56 @@
+# Default values for aws-alb-ingress-controller.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+## Resources created by the ALB Ingress controller will be prefixed with this string
+## Required
+clusterName: continuous-testing
+
+## Auto Discover awsRegion from ec2metadata, set this to true and omit awsRegion when ec2metadata is available.
+autoDiscoverAwsRegion: true
+
+## Auto Discover awsVpcID from ec2metadata, set this to true and omit awsVpcID: " when ec2metadata is available.
+autoDiscoverAwsVpcID: true
+
+# whether configure readinessProbe on controller pod
+enableReadinessProbe: true
+
+# How often (in seconds) to check controller readiness
+readinessProbeInterval: 60
+
+# How long to wait before timeout (in seconds) when checking controller readiness
+readinessProbeTimeout: 3
+
+# How long to wait (in seconds) before checking the readiness probe
+readinessProbeInitialDelay: 30
+
+# whether configure livenessProbe on controller pod
+enableLivenessProbe: false
+
+# How long to wait (in seconds) before checking the liveness probe
+livenessProbeInitialDelay: 30
+
+# How long to wait before timeout (in seconds) when checking controller liveness
+livenessProbeTimeout: 1
+
+rbac:
+  ## If true, create & use RBAC resources
+  ##
+  create: false
+  serviceAccount:
+    create: false
+    name: alb-ingress-controller
+
+image:
+  repository: docker.io/amazon/aws-alb-ingress-controller
+  tag: "v1.1.6"
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+resources:
+  limits:
+    memory: 128Mi
+  requests:
+    cpu: 150m
+    memory: 128Mi
