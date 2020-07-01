@@ -1,0 +1,43 @@
+pipeline {
+
+  environment {
+    registry = "192.168.1.81:5000/justme/myweb"
+    dockerImage = ""
+  }
+
+  agent any
+
+  stages {
+    stage('Review Terraform Plan') {
+      when {
+        beforeAgent: true
+        allOf {
+          changeRequest target: 'master';
+          changeset "infrastructure/repositories/*"
+        }
+      }
+      steps{
+        sh """
+        terraform init
+        terraform plan
+        """
+      }
+    }
+    stage('Apply Terraform') {
+      when {
+        beforeAgent: true
+        allOf {
+          branch 'master';
+          changeset "infrastructure/repositories/*"
+        }
+      }
+      steps{
+        sh """
+        terraform init
+        terraform apply
+        """
+      }
+    }
+  }
+
+}
