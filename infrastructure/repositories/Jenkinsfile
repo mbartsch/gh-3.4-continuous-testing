@@ -6,7 +6,7 @@ pipeline {
         beforeAgent true
         allOf {
           changeRequest target: 'master'
-          changeset 'infrastructure/repositories/*'
+          changeset 'infrastructure/repositories/**/*'
         }
       }
       steps{
@@ -24,7 +24,7 @@ pipeline {
         beforeAgent true
         allOf {
           branch 'master'
-          changeset 'infrastructure/repositories/*'
+          changeset 'infrastructure/repositories/**/*'
         }
       }
       steps{
