@@ -12,6 +12,7 @@ pipeline {
       steps{
         dir("infrastructure/repositories") {
           sh """
+          terraform version
           terraform init
           terraform plan
           """
