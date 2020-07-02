@@ -8,6 +8,8 @@ pipeline {
       steps {
         sh """
         aws eks update-kubeconfig --name continuous-testing --alias continuous-testing
+        helm repo add bitnami https://charts.bitnami.com/bitnami
+        helm repo update
         """
       }
     }
