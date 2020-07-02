@@ -7,6 +7,7 @@ RUN apk add --no-cache \
     python3 \
     py3-pip \
     docker \
+    go \
     curl
 
 # Install terraform
