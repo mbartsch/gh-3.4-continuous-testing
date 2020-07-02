@@ -17,6 +17,7 @@ pipeline {
         }
       }
       steps{
+        sleep 3600
         dir("${WORKINGDIR}/module/test") {
           sh """
           go test -mod vendor
