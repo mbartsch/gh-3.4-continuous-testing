@@ -1,16 +1,24 @@
 pipeline {
   agent any
+  environment {
+    WORKINGDIR = "infrastructure/repositories"
+  }
   stages {
     stage('Review Terraform Plan') {
       when {
         beforeAgent true
         allOf {
           changeRequest target: 'master'
-          changeset 'infrastructure/repositories/**/*'
+          changeset "${WORKINGDIR}/**/*"
         }
       }
       steps{
-        dir('infrastructure/repositories') {
+        dir("${WORKINGDIR}/module/test") {
+          sh """
+          go test
+          """
+        }
+        dir(WORKINGDIR) {
           sh """
           terraform version
           terraform init
@@ -24,11 +32,11 @@ pipeline {
         beforeAgent true
         allOf {
           branch 'master'
-          changeset 'infrastructure/repositories/**/*'
+          changeset "${WORKINGDIR}/**/*"
         }
       }
       steps{
-        dir("infrastructure/repositories") {
+        dir(WORKINGDIR) {
           sh """
           terraform init
           terraform apply
