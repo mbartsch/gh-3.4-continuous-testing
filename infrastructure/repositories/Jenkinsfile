@@ -3,7 +3,7 @@ pipeline {
   environment {
     WORKINGDIR = "infrastructure/repositories"
     TRIGGER = sh(
-      script: "dirname \$(git diff --name-only --diff-filter=AMR HEAD^ ${WORKINGDIR}) 2>/dev/null || true",
+      script: "dirname \$(git diff --name-only --diff-filter=AMR HEAD^ ${WORKINGDIR}) 2>/dev/null || echo 'NOTHING'",
       returnStdout: true
     )
   }
@@ -13,7 +13,7 @@ pipeline {
         beforeAgent true
         allOf {
           changeRequest target: 'master'
-          expression { TRIGGER != null }
+          expression { TRIGGER != 'NOTHING' }
         }
       }
       steps{
@@ -36,7 +36,7 @@ pipeline {
         beforeAgent true
         allOf {
           branch 'master'
-          expression { TRIGGER != null }
+          expression { TRIGGER != 'NOTHING' }
         }
       }
       steps{
