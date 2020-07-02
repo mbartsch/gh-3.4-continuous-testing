@@ -6,3 +6,7 @@ module "jenkins" {
 output "url" {
   value = module.jenkins.url
 }
+
+output "name" {
+  value = module.jenkins.name
+}
