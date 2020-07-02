@@ -391,7 +391,7 @@ master:
 agent:
   enabled: true
   image: "268229342313.dkr.ecr.eu-west-1.amazonaws.com/jenkins-agent"
-  tag: "v0.0.5"
+  tag: "v0.0.6"
   workingDir: "/home/jenkins"
   customJenkinsLabels: []
   # name of the secret to be used for image pulling
