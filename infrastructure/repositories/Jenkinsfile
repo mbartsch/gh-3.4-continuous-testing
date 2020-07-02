@@ -2,15 +2,15 @@ pipeline {
   agent any
   stages {
     stage('Review Terraform Plan') {
-      // when {
-      //   beforeAgent: true
-      //   allOf {
-      //     changeRequest target: 'master'
-      //     changeset "infrastructure/repositories/*"
-      //   }
-      // }
+      when {
+        beforeAgent true
+        allOf {
+          changeRequest target: 'master'
+          changeset 'infrastructure/repositories/*'
+        }
+      }
       steps{
-        dir("infrastructure/repositories") {
+        dir('infrastructure/repositories') {
           sh """
           terraform version
           terraform init
