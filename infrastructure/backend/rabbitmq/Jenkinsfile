@@ -23,9 +23,11 @@ pipeline {
           sh """
           helm upgrade rabbit rabbitmq/ --set persistence.enabled=false --debug --wait --install --namespace qa
           """
-          rc = sh(script: "helm test rabbit --logs --namespace qa", returnStatus: true)
-          if (rc != 0) {
-            sh "helm rollback rabbit 0"
+          script {
+            rc = sh(script: "helm test rabbit --logs --namespace qa", returnStatus: true)
+            if (rc != 0) {
+              sh "helm rollback rabbit 0 -n qa"
+            }
           }
         }
       }
@@ -40,11 +42,13 @@ pipeline {
       steps{
         dir(WORKINGDIR) {
           sh """
-          helm upgrade rabbit rabbitmq/ --set persistence.enabled=false --debug --wait --install --namespace qa
+          helm upgrade rabbit rabbitmq/ --set persistence.enabled=false --debug --wait --install --namespace prod
           """
-          rc = sh(script: "helm test rabbit --logs --namespace qa", returnStatus: true)
-          if (rc != 0) {
-            sh "helm rollback rabbit 0"
+          script {
+            rc = sh(script: "helm test rabbit --logs --namespace prod", returnStatus: true)
+            if (rc != 0) {
+              sh "helm rollback rabbit 0 -n prod"
+            }
           }
         }
       }
