@@ -10,10 +10,12 @@ pipeline {
       //   }
       // }
       steps{
-        sh """
-        terraform init
-        terraform plan
-        """
+        dir("infrastructure/repositories") {
+          sh """
+          terraform init
+          terraform plan
+          """
+        }
       }
     }
     // stage('Apply Terraform') {
@@ -25,10 +27,12 @@ pipeline {
     //     }
     //   }
     //   steps{
-    //     sh """
-    //     terraform init
-    //     terraform apply
-    //     """
+    //     dir("infrastructure/repositories") {
+        //     sh """
+        //     terraform init
+        //     terraform apply
+        //     """
+        // }
     //   }
     // }
   }

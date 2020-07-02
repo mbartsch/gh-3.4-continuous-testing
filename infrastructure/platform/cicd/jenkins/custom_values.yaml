@@ -390,7 +390,7 @@ master:
 
 agent:
   enabled: true
-  image: "268229342313.dkr.ecr.eu-west-1.amazonaws.com/jenkins-agent:v0.0.2"
+  image: "268229342313.dkr.ecr.eu-west-1.amazonaws.com/jenkins-agent"
   tag: "v0.0.2"
   workingDir: "/home/jenkins"
   customJenkinsLabels: []
@@ -408,7 +408,7 @@ agent:
   alwaysPullImage: false
   # Controls how agent pods are retained after the Jenkins build completes
   # Possible values: Always, Never, OnFailure
-  podRetention: "Never"
+  podRetention: "OnFailure"
   # You can define the volumes that you want to mount for this container
   # Allowed types are: ConfigMap, EmptyDir, HostPath, Nfs, PVC, Secret
   # Configure the attributes as they appear in the corresponding Java class for that type
