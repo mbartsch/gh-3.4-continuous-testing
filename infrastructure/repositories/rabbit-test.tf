@@ -1,12 +1,12 @@
-module "ecr" {
+module "rabbit" {
   source = "./module"
   name   = "rabbit-test"
 }
 
-output "url" {
-  value = module.ecr.url
+output "rabbit-url" {
+  value = module.rabbit.url
 }
 
-output "name" {
-  value = module.ecr.name
+output "rabbit-name" {
+  value = module.rabbit.name
 }
