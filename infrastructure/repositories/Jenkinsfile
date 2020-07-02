@@ -19,23 +19,23 @@ pipeline {
         }
       }
     }
-    // stage('Apply Terraform') {
-    //   when {
-    //     beforeAgent: true
-    //     allOf {
-    //       branch 'master'
-    //       changeset 'infrastructure/repositories/*'
-    //     }
-    //   }
-    //   steps{
-    //     dir("infrastructure/repositories") {
-        //     sh """
-        //     terraform init
-        //     terraform apply
-        //     """
-        // }
-    //   }
-    // }
+    stage('Apply Terraform') {
+      when {
+        beforeAgent true
+        allOf {
+          branch 'master'
+          changeset 'infrastructure/repositories/*'
+        }
+      }
+      steps{
+        dir("infrastructure/repositories") {
+          sh """
+          terraform init
+          terraform apply
+          """
+        }
+      }
+    }
   }
 
 }
