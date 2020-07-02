@@ -1,0 +1,54 @@
+pipeline {
+  agent any
+  environment {
+    WORKINGDIR = "infrastructure/backend/rabbitmq"
+  }
+  stages {
+    stage('Configure Kubernetes Access') {
+      steps {
+        sh """
+        aws eks update-kubeconfig --name continuous-testing --alias continuous-testing
+        """
+      }
+    }
+    stage('Deploy QA') {
+      when {
+        beforeAgent true
+        allOf {
+          changeRequest target: 'master'
+        }
+      }
+      steps{
+        dir(WORKINGDIR) {
+          sh """
+          helm upgrade rabbit rabbitmq/ --set persistence.enabled=false --debug --wait --install --namespace qa
+          """
+          rc = sh(script: "helm test rabbit --logs --namespace qa", returnStatus: true)
+          if (rc != 0) {
+            sh "helm rollback rabbit 0"
+          }
+        }
+      }
+    }
+    stage('Deploy Prod') {
+      when {
+        beforeAgent true
+        allOf {
+          branch 'master'
+        }
+      }
+      steps{
+        dir(WORKINGDIR) {
+          sh """
+          helm upgrade rabbit rabbitmq/ --set persistence.enabled=false --debug --wait --install --namespace qa
+          """
+          rc = sh(script: "helm test rabbit --logs --namespace qa", returnStatus: true)
+          if (rc != 0) {
+            sh "helm rollback rabbit 0"
+          }
+        }
+      }
+    }
+  }
+
+}
