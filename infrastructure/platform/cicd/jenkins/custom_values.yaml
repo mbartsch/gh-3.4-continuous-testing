@@ -226,6 +226,7 @@ master:
     - configuration-as-code:1.41
     - blueocean:1.23.2
     - docker-workflow:1.23
+    - multibranch-build-strategy-extension:1.0.10
 
   # List of plugins to install in addition to those listed in master.installPlugins
   additionalPlugins: []
