@@ -391,7 +391,7 @@ master:
 agent:
   enabled: true
   image: "268229342313.dkr.ecr.eu-west-1.amazonaws.com/jenkins-agent"
-  tag: "v0.0.5"
+  tag: "v0.0.6"
   workingDir: "/home/jenkins"
   customJenkinsLabels: []
   # name of the secret to be used for image pulling
@@ -401,9 +401,12 @@ agent:
   runAsUser:
   runAsGroup:
   resources:
+    limits:
+      cpu: "1000m"
+      memory: "1024Mi"
     requests:
-      cpu: "512m"
-      memory: "512Mi"
+      cpu: "1000m"
+      memory: "1024Mi"
   # You may want to change this to true while testing a new image
   alwaysPullImage: false
   # Controls how agent pods are retained after the Jenkins build completes

@@ -1,16 +1,28 @@
 pipeline {
   agent any
+  environment {
+    WORKINGDIR = "infrastructure/repositories"
+    TRIGGER = sh(
+      script: "dirname \$(git diff --name-only --diff-filter=AMR HEAD^ ${WORKINGDIR}) 2>/dev/null || echo 'NOTHING'",
+      returnStdout: true
+    )
+  }
   stages {
     stage('Review Terraform Plan') {
       when {
         beforeAgent true
         allOf {
           changeRequest target: 'master'
-          changeset 'infrastructure/repositories/**/*'
+          expression { TRIGGER != 'NOTHING' }
         }
       }
       steps{
-        dir('infrastructure/repositories') {
+        dir("${WORKINGDIR}/module/test") {
+          sh """
+          go test -mod vendor
+          """
+        }
+        dir(WORKINGDIR) {
           sh """
           terraform version
           terraform init
@@ -24,11 +36,11 @@ pipeline {
         beforeAgent true
         allOf {
           branch 'master'
-          changeset 'infrastructure/repositories/**/*'
+          expression { TRIGGER != 'NOTHING' }
         }
       }
       steps{
-        dir("infrastructure/repositories") {
+        dir(WORKINGDIR) {
           sh """
           terraform init
           terraform apply
