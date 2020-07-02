@@ -10,6 +10,12 @@ iam:
   withOIDC: true
   serviceAccounts:
   - metadata:
+      name: jenkins-agent
+      namespace: jenkins
+      labels: {aws-usage: "cicd"}
+    attachPolicyARNs:
+    - arn:aws:iam::aws:policy/AdministratorAccess
+  - metadata:
       name: container-insights
       namespace: monitoring
       labels: {aws-usage: "cluster-ops"}
@@ -134,8 +140,8 @@ managedNodeGroups:
   labels: {role: worker, course: continuous-testing}
   iam:
     withAddonPolicies:
-      - imageBuilder: true
-      - externalDNS: true
+      imageBuilder: true
+      externalDNS: true
   tags:
     nodegroup-role: worker
     course: continuous-testing

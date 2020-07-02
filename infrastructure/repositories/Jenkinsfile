@@ -1,0 +1,41 @@
+pipeline {
+  agent any
+  stages {
+    stage('Review Terraform Plan') {
+      when {
+        beforeAgent true
+        allOf {
+          changeRequest target: 'master'
+          changeset 'infrastructure/repositories/*'
+        }
+      }
+      steps{
+        dir('infrastructure/repositories') {
+          sh """
+          terraform version
+          terraform init
+          terraform plan
+          """
+        }
+      }
+    }
+    stage('Apply Terraform') {
+      when {
+        beforeAgent true
+        allOf {
+          branch 'master'
+          changeset 'infrastructure/repositories/*'
+        }
+      }
+      steps{
+        dir("infrastructure/repositories") {
+          sh """
+          terraform init
+          terraform apply
+          """
+        }
+      }
+    }
+  }
+
+}
