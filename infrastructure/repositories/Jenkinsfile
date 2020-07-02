@@ -19,7 +19,7 @@ pipeline {
       steps{
         dir("${WORKINGDIR}/module/test") {
           sh """
-          go test
+          go test -mod vendor
           """
         }
         dir(WORKINGDIR) {
