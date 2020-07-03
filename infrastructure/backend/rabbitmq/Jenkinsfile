@@ -1,0 +1,70 @@
+pipeline {
+  agent any
+  environment {
+    WORKINGDIR = "infrastructure/backend/rabbitmq"
+  }
+  stages {
+    stage('Configure Kubernetes Access') {
+      steps {
+        sh """
+        aws eks update-kubeconfig --name continuous-testing --alias continuous-testing
+        """
+      }
+    }
+    stage('Deploy QA') {
+      when {
+        beforeAgent true
+        allOf {
+          changeRequest target: 'master'
+        }
+      }
+      steps{
+        dir(WORKINGDIR) {
+          sh """
+          helm upgrade rabbit chart/ --set persistence.enabled=false --debug --wait --install --namespace qa
+          """
+          script {
+            rc = sh(script: "helm test rabbit --logs --namespace qa", returnStatus: true)
+            if (rc != 0) {
+              sh """
+              helm rollback rabbit 0 -n qa
+              exit 1
+              """
+            }
+          }
+          sh """
+           kubectl delete pod -n qa rabbit-rabbitmq-test
+          """
+        }
+      }
+    }
+    stage('Deploy Prod') {
+      when {
+        beforeAgent true
+        allOf {
+          branch 'master'
+        }
+      }
+      steps{
+        dir(WORKINGDIR) {
+          sh """
+          helm upgrade rabbit chart/ --set persistence.enabled=false --debug --wait --install --namespace prod
+          """
+          script {
+            rc = sh(script: "helm test rabbit --logs --namespace prod", returnStatus: true)
+            if (rc != 0) {
+              sh """
+              helm rollback rabbit 0 -n prod
+              exit 1
+              """
+            }
+          }
+          sh """
+           kubectl delete pod -n prod rabbit-rabbitmq-test
+          """
+        }
+      }
+    }
+  }
+
+}
