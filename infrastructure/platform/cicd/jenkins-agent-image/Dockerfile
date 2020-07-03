@@ -86,6 +86,8 @@ RUN curl -o helm.tar.gz https://get.helm.sh/helm-v3.2.4-linux-amd64.tar.gz \
 RUN pip3 install awscli
 
 # Additional tools
-RUN apk add --no-cache jq
+RUN apk add --no-cache \
+      jq \
+      python3-dev
 
 ENTRYPOINT ["jenkins-slave"]
