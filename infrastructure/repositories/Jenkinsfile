@@ -25,6 +25,7 @@ pipeline {
           go test -mod vendor
           """
         }
+        sleep 3600
         dir(WORKINGDIR) {
           sh """
           terraform version
