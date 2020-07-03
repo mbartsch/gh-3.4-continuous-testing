@@ -26,9 +26,15 @@ pipeline {
           script {
             rc = sh(script: "helm test rabbit --logs --namespace qa", returnStatus: true)
             if (rc != 0) {
-              sh "helm rollback rabbit 0 -n qa"
+              sh """
+              helm rollback rabbit 0 -n qa
+              exit 1
+              """
             }
           }
+          sh """
+           kubectl delete pod -n qa rabbit-rabbitmq-test
+          """
         }
       }
     }
@@ -47,9 +53,15 @@ pipeline {
           script {
             rc = sh(script: "helm test rabbit --logs --namespace prod", returnStatus: true)
             if (rc != 0) {
-              sh "helm rollback rabbit 0 -n prod"
+              sh """
+              helm rollback rabbit 0 -n prod
+              exit 1
+              """
             }
           }
+          sh """
+           kubectl delete pod -n prod rabbit-rabbitmq-test
+          """
         }
       }
     }
