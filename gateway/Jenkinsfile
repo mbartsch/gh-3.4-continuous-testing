@@ -22,7 +22,6 @@ pipeline {
         dir(WORKINGDIR) {
           sh """
           pip3 install -U -e ".[dev]"
-          flake8 .
           coverage run -m pytest .
           """
         }
