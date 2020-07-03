@@ -22,7 +22,7 @@ pipeline {
         dir(WORKINGDIR) {
           sh """
           pip3 install -U -e ".[dev]"
-          coverage run -m pytest .
+          coverage run -m pytest test/unit
           """
         }
       }
