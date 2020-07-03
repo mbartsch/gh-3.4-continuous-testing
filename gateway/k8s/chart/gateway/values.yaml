@@ -1,0 +1,11 @@
+replicaCount: 1
+image:
+  name: overdrive3000/nameko-example-gateway
+  tag: v0.3
+ingressPort: 80
+servicePort: 8000
+rabbit:
+  host: rabbit-rabbitmq
+  mgmt_port: 15672
+  port: 5672
+  user: user
