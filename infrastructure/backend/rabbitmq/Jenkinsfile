@@ -8,8 +8,6 @@ pipeline {
       steps {
         sh """
         aws eks update-kubeconfig --name continuous-testing --alias continuous-testing
-        helm repo add bitnami https://charts.bitnami.com/bitnami
-        helm repo update
         """
       }
     }
@@ -23,7 +21,7 @@ pipeline {
       steps{
         dir(WORKINGDIR) {
           sh """
-          helm upgrade rabbit rabbitmq/ --set persistence.enabled=false --debug --wait --install --namespace qa
+          helm upgrade rabbit chart/ --set persistence.enabled=false --debug --wait --install --namespace qa
           """
           script {
             rc = sh(script: "helm test rabbit --logs --namespace qa", returnStatus: true)
@@ -44,7 +42,7 @@ pipeline {
       steps{
         dir(WORKINGDIR) {
           sh """
-          helm upgrade rabbit rabbitmq/ --set persistence.enabled=false --debug --wait --install --namespace prod
+          helm upgrade rabbit chart/ --set persistence.enabled=false --debug --wait --install --namespace prod
           """
           script {
             rc = sh(script: "helm test rabbit --logs --namespace prod", returnStatus: true)
