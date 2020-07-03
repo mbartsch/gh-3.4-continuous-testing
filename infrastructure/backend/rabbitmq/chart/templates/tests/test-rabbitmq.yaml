@@ -13,7 +13,7 @@ spec:
         - name: RABBIT_HOST
           value: {{ template "rabbitmq.fullname" . }}
         - name: RABBIT_USER
-          value: user2
+          value: user
         - name: RABBIT_PASS
           valueFrom:
             secretKeyRef:
