@@ -11,13 +11,13 @@ spec:
       imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
       env:
         - name: RABBIT_HOST
-          value: {{ template "rabbitmq.fullname" . }}
+          value: {{ include "rabbitmq.fullname" . }}
         - name: RABBIT_USER
-          value: user
+          value: {{ .Values.auth.username }}
         - name: RABBIT_PASS
           valueFrom:
             secretKeyRef:
-              name: rabbit-rabbitmq
+              name: {{ include "rabbitmq.fullname" . }}
               key: rabbitmq-password
       command:
         - /bin/bash
