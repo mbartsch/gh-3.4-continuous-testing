@@ -1,0 +1,12 @@
+setup.py
+gateway/__init__.py
+gateway/entrypoints.py
+gateway/exceptions.py
+gateway/schemas.py
+gateway/service.py
+nameko_examples_gateway.egg-info/PKG-INFO
+nameko_examples_gateway.egg-info/SOURCES.txt
+nameko_examples_gateway.egg-info/dependency_links.txt
+nameko_examples_gateway.egg-info/requires.txt
+nameko_examples_gateway.egg-info/top_level.txt
+nameko_examples_gateway.egg-info/zip-safe

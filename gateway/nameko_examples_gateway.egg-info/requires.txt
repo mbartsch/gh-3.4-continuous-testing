@@ -1,0 +1,7 @@
+marshmallow==2.19.2
+nameko==v3.0.0-rc6
+
+[dev]
+pytest==4.5.0
+coverage==4.5.3
+flake8==3.7.7
