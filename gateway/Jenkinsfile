@@ -1,0 +1,32 @@
+pipeline {
+  agent any
+  environment {
+    WORKINGDIR = "gateway"
+  }
+  stages {
+    stage('Configure Kubernetes Access') {
+      steps {
+        sh """
+        aws eks update-kubeconfig --name continuous-testing --alias continuous-testing
+        """
+      }
+    }
+    stage('Running Test') {
+      when {
+        beforeAgent true
+        allOf {
+          branch 'overdrive-test'
+        }
+      }
+      steps{
+        dir(WORKINGDIR) {
+          sh """
+          pip3 install -U -e ".[dev]"
+          coverage run -m pytest test/unit
+          """
+        }
+      }
+    }
+  }
+
+}
