@@ -6,6 +6,13 @@ pipeline {
   stages {
     stage('Configure Kubernetes Access') {
       steps {
+              container('jnlp') {
+                 sh """
+                    apt update
+                    apt install -y python3-pip golang
+                    pip install awscli
+                """
+              }
         sh """
         aws eks update-kubeconfig --name continuous-testing --alias continuous-testing
         """
