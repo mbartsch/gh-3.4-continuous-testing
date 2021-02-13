@@ -15,7 +15,7 @@ pipeline {
       when {
         beforeAgent true
         allOf {
-          branch 'overdrive-test'
+          branch 'master'
         }
       }
       steps{
