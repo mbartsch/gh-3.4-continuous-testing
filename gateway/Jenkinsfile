@@ -11,7 +11,7 @@ pipeline {
         """
       }
     }
-    stage('Running Test') {
+    stage('Install Dependencies') {
       when {
         beforeAgent true
         allOf {
@@ -22,6 +22,20 @@ pipeline {
         dir(WORKINGDIR) {
           sh """
           pip3 install -U -e ".[dev]"
+          """
+        }
+      }
+    }
+    stage('Running Test') {
+      when {
+        beforeAgent true
+        allOf {
+          branch 'master'
+        }
+      }
+      steps{
+        dir(WORKINGDIR) {
+          sh """
           coverage run -m pytest test/unit
           """
         }
