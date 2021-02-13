@@ -26,7 +26,7 @@ class HttpEntrypoint(HttpRequestHandler):
             if type(exc) in self.mapped_errors:
                 status_code, error_code = self.mapped_errors[type(exc)]
             else:
-                status_code = 404
+                status_code = 400
                 error_code = 'BAD_REQUEST'
 
         return Response(
