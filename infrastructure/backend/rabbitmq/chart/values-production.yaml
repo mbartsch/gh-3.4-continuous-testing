@@ -10,7 +10,9 @@
 
 ## Bitnami RabbitMQ image version
 ## ref: https://hub.docker.com/r/bitnami/rabbitmq/tags/
-##
+#
+auth:
+  username: poe
 image:
   registry: docker.io
   repository: bitnami/rabbitmq
