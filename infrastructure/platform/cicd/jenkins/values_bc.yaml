@@ -1,0 +1,47 @@
+controller:
+  adminUser: admin
+  adminPassword: bootcamp
+  installPlugins:
+    - kubernetes
+    - workflow-job
+    - workflow-aggregator
+    - credentials-binding
+    - git
+    - configuration-as-code
+    - blueocean
+    - docker-workflow
+    - multibranch-build-strategy-extension
+  ingress:
+    enabled: true
+    # Override for the default paths that map requests to the backend
+    apiVersion: "extensions/v1beta1"
+    labels: {}
+    annotations:
+      kubernetes.io/ingress.class: alb
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 8888}]'
+      alb.ingress.kubernetes.io/target-type: ip
+      alb.ingress.kubernetes.io/scheme: internet-facing
+      alb.ingress.kubernetes.io/healthcheck-path: /login
+      ingress.kubernetes.io/ssl-redirect: "false"
+agent:
+  enabled: true
+  resources:
+    limits:
+      cpu: "1000m"
+      memory: "1024Mi"
+    requests:
+      cpu: "1000m"
+      memory: "1024Mi"
+  podRetention: "OnFailure"
+  volumes:
+    - type: HostPath
+      hostPath: /var/run/docker.sock
+      mountPath: /var/run/docker.sock
+  envVars:
+    - name: AWS_DEFAULT_REGION
+      value: eu-west-1
+persistence:
+  enabled: true
+  storageClass: gp2
+  accessMode: "ReadWriteOnce"
+  size: "8Gi"
