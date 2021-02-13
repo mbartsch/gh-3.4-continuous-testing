@@ -1,4 +1,4 @@
-FROM jenkins/jnlp-slave:4.3-4-alpine
+FROM jenkins/inbound-agent:4.6-1-alpine
 
 ENV TERRAFORM_VERSION 0.12.28
 ENV GOLANG_VERSION 1.14.4
@@ -90,4 +90,4 @@ RUN apk add --no-cache \
       jq \
       python3-dev
 
-ENTRYPOINT ["jenkins-slave"]
+ENTRYPOINT ["jenkins-agent"]

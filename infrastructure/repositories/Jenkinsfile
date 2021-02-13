@@ -12,13 +12,6 @@ pipeline {
         }
       }
       steps{
-        container('jnlp') {
-            sh """
-                apt update
-                apt install -y python3-pip golang
-                pip install awscli
-            """
-        }
         dir("${WORKINGDIR}/module/test") {
           sh """
           aws sts assume-role-with-web-identity \

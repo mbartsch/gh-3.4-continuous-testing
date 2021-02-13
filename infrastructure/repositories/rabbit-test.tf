@@ -1,6 +1,6 @@
 module "rabbit" {
   source = "./module"
-  name   = "rabbit-test"
+  name   = "rabbit-test-2021"
 }
 
 output "rabbit-url" {

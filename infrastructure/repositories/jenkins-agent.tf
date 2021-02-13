@@ -1,6 +1,6 @@
 module "jenkins" {
   source = "./module"
-  name   = "jenkins-agent"
+  name   = "jenkins-agent-2021"
 }
 
 output "url" {
