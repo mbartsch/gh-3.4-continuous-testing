@@ -9,6 +9,8 @@ pipeline {
         sh """
         aws eks update-kubeconfig --name continuous-testing --alias continuous-testing
         cat /root/.kube/config
+        aws --region eu-west-1 eks get-token --cluster-name continuous-testing
+        kubectl get pod --namespace jenkins
         """
       }
     }
