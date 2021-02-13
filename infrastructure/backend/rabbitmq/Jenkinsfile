@@ -25,7 +25,7 @@ pipeline {
       steps{
         dir(WORKINGDIR) {
           sh """
-          helm upgrade rabbit chart/ --set persistence.enabled=false --debug --wait --install --namespace qa
+          helm upgrade rabbit -f chart/values-qa.yaml chart/ --set persistence.enabled=false --debug --wait --install --namespace qa
           """
           script {
             rc = sh(script: "helm test rabbit --logs --namespace qa", returnStatus: true)
